@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #06080d;
+  color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Light theme overrides */
+.light body,
+body:has(.light-theme) {
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a2236;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2c3854;
+}
+
+/* Utility classes */
+@layer components {
+  .card {
+    @apply rounded-xl border border-ink-700/60 bg-ink-850/80 backdrop-blur-sm;
+  }
+  .card-hover {
+    @apply transition-all duration-200 hover:border-ink-500/80 hover:bg-ink-800;
+  }
+  .stat-chip {
+    @apply inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-xs font-medium font-mono;
+  }
+  .nav-item {
+    @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-400 transition-all duration-150 hover:bg-ink-700/50 hover:text-slate-200;
+  }
+  .nav-item-active {
+    @apply bg-accent-500/10 text-accent-300 hover:bg-accent-500/15 hover:text-accent-300;
+  }
+  .section-title {
+    @apply text-xs font-semibold uppercase tracking-wider text-slate-500;
+  }
+}
+
+/* Light theme component overrides */
+.light .card {
+  background-color: #ffffff;
+  border-color: #e2e8f0;
+}
+.light .nav-item {
+  color: #475569;
+}
+.light .nav-item:hover {
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+.light .nav-item-active {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+.light .nav-item-active:hover {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+.light .section-title {
+  color: #64748b;
+}
+.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
+/* Recharts dark theme tweaks */
+.recharts-cartesian-axis-tick-value {
+  fill: #64748b;
+  font-size: 11px;
+}
+.recharts-legend-item-text {
+  color: #94a3b8 !important;
+}
+.recharts-tooltip-cursor {
+  fill: rgba(59, 130, 246, 0.08);
+}
+.recharts-default-tooltip {
+  background-color: #0d121d !important;
+  border: 1px solid #1a2236 !important;
+  border-radius: 8px !important;
+}
