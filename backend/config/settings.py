@@ -9,6 +9,7 @@ import os
 from functools import lru_cache
 from pathlib import Path
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -23,6 +24,29 @@ class Settings(BaseSettings):
     host: str = "0.0.0.0"
     port: int = 8000
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, value):
+        if value is None or value == "":
+            return ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+        if isinstance(value, str):
+            origins = [item.strip() for item in value.split(",") if item.strip()]
+            if origins:
+                return origins
+
+        if isinstance(value, list):
+            return [str(item).strip() for item in value if str(item).strip()]
+
+        return ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+    @classmethod
+    def from_env(cls) -> "Settings":
+        env_value = os.environ.get("CORS_ORIGINS") or os.environ.get("ALLOWED_ORIGINS")
+        if env_value:
+            return cls(cors_origins=env_value)
+        return cls()
 
     # --- Database ---------------------------------------------------------
     db_path: str = str(BACKEND_DIR / "database" / "macroai.db")
