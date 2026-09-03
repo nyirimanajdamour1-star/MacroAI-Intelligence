@@ -8,7 +8,8 @@
  * - Typed service methods consumed by every page
  */
 
-const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || '';
+const DEFAULT_API_BASE = 'https://macro-ai-intelligence-production.up.railway.app';
+const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE || DEFAULT_API_BASE;
 
 const DEFAULT_TIMEOUT = 10000;
 

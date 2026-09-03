@@ -5,6 +5,7 @@ import { SeriesChart, MultiSeriesChart } from '@/components/Charts';
 import { ArrowUp, ArrowDown, Minus } from 'lucide-react';
 import { useApiDataWithFallback } from '@/hooks/useApiData';
 import { adaptCurrencies } from '@/lib/adapters';
+import { api } from '@/lib/api';
 
 interface IndicatorPageProps {
   indicatorKey: string; // e.g. 'rate', 'cpi', 'gdp', 'unemp', 'retail', 'pmi', 'trade', 'yield'
@@ -43,9 +44,7 @@ function useLiveBondYield(indicatorKey: string) {
     let cancelled = false;
     async function fetchBondYield() {
       try {
-        const res = await fetch('/api/markets');
-        if (!res.ok) return;
-        const data = await res.json();
+        const data = await api.get<{ bonds?: Array<{ country?: string; maturity?: string; value?: number; change?: number }> }>('/api/markets');
         const bonds = data?.bonds ?? data?.bond_yields ?? [];
         const us10y = Array.isArray(bonds)
           ? bonds.find((b: any) => b.country === 'US' && b.maturity === '10Y')
