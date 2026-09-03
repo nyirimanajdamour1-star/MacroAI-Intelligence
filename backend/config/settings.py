@@ -18,7 +18,11 @@ PROJECT_DIR = BACKEND_DIR.parent
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=str(PROJECT_DIR / ".env"), extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=str(PROJECT_DIR / ".env"),
+        extra="ignore",
+        enable_decoding=False,
+    )
 
     # --- Server -----------------------------------------------------------
     host: str = "0.0.0.0"
