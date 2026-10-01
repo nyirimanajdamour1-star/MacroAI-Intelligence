@@ -1,3 +1,5 @@
 backend
 Dockerfile
 railway.toml
+requirements.txt
+nixpacks.toml
