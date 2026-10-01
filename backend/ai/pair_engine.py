@@ -8,13 +8,10 @@ a trade signal row.
 from __future__ import annotations
 
 import logging
-import math
-import time
 from typing import Any
 
 from backend.database.connection import query_all, query_one, execute
 from backend.ai.scoring_engine import compute_all_scores, _score_to_signal
-from backend.config.settings import get_settings
 
 logger = logging.getLogger("macroai.pairs")
 
@@ -57,11 +54,9 @@ def compute_all_pairs() -> list[dict[str, Any]]:
     """Generate signals for all pairs and persist."""
     scores = compute_all_scores()
     score_map = {s["currency"]: s for s in scores}
-    demo_mode = not bool(get_settings().tradingeconomics_token)
-    tick = time.time()
 
     results: list[dict[str, Any]] = []
-    for idx, pair in enumerate(PAIRS):
+    for pair in PAIRS:
         base, quote = _split_pair(pair)
         if base not in score_map or quote not in score_map:
             continue
@@ -69,10 +64,6 @@ def compute_all_pairs() -> list[dict[str, Any]]:
         base_score = score_map[base]["overall_score"]
         quote_score = score_map[quote]["overall_score"]
         diff = round(base_score - quote_score, 1)
-
-        if demo_mode:
-            demo_wave = math.sin(tick / 18 + idx * 0.9) * 8
-            diff = round(diff + demo_wave, 1)
 
         # Signal is from the perspective of buying the base currency.
         # Positive diff → buy the base. Slightly amplify the spread so signals
